@@ -1,0 +1,62 @@
+﻿@using GridMvc.Html
+@model List<Vidly.EF.Movy>
+@{
+    ViewBag.Title = "List Of Movies";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h2>List of Movies</h2>
+
+
+@if (!Model.Any())
+{
+    <p>We don't have any movies yet</p>
+}
+else
+{
+    <table id="movies" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Movie</th>
+                <th>Genre</th>
+                <th>Details</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var movie in Model)
+            {
+                <tr>
+                    <td>@movie.Name</td>
+                    <td>@movie.Genre</td>
+                    <td>@Html.ActionLink("Details", "Detail1", "Movies", new { id = movie.Id })</td>
+                    
+                    
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+}
+
+@section scripts
+    {
+    <script>
+        $(document).ready(function () {
+            $("#movies").DataTable();
+
+           
+        })</script>
+}
+
+
+
+
+
+
+
+

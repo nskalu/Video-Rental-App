@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Create";
+   // Layout = "~/Views/Shared/_MyLayout.cshtml";
+}
+
+<h2>Create Role</h2>
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-success" role="alert">@ViewBag.Message</div>
+}
+
+<div>
+    @using (Html.BeginForm("Create", "Roles", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-group">
+            <input type="text" name="txtName" class="form-control" placeholder="Role Name" />
+            <button type="submit" class="btn btn btn-primary">Save</button>
+        </div>
+    }
+</div>
+

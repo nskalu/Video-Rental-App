@@ -1,0 +1,25 @@
+﻿
+@model Vidly.Models.AssignRoleViewModel
+@{
+    ViewBag.Title = "Assign";
+}
+
+<h2>Assign Roles</h2>
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-success" role="alert">@ViewBag.Message</div>
+}
+
+<div>
+    @using (Html.BeginForm("AssignUserToRole", "Roles", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-group">
+            @Html.DropDownListFor(m => m.SelectedUser, new SelectList(Model.Users, "Id", "UserName"), "Select User", new { @class = "form-control" })
+            @Html.DropDownListFor(m => m.SelectedRole, new SelectList(Model.Roles, "Name", "Name"), "Select Role", new { @class = "form-control" })
+            <button type="submit" class="btn btn btn-primary">Save</button>
+        </div>
+    }
+</div>
+
+
+

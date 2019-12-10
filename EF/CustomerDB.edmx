@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="VidlyDbFirstModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Membership_Type" Type="varchar" MaxLength="50" />
+          <Property Name="DOB" Type="datetimeoffset" Precision="7" />
+          <Property Name="Address" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ImageUrl" Type="varchar" MaxLength="4000" />
+          <Property Name="Image" Type="varbinary(max)" />
+          <Property Name="Content_Type" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Membership_Type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Age_Limit" Type="int" />
+        </EntityType>
+        <EntityType Name="Movies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Release_Date" Type="datetimeoffset" Precision="7" />
+          <Property Name="Genre" Type="varchar" MaxLength="20" />
+          <Property Name="Qty_In_Stock" Type="int" Nullable="false" />
+          <Property Name="NoAvailable" Type="int" />
+        </EntityType>
+        <EntityType Name="PageRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PageID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rental">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Customer_Id" Type="int" Nullable="false" />
+          <Property Name="Movie_Id" Type="int" Nullable="false" />
+          <Property Name="Date_Rented" Type="datetimeoffset" Precision="7" />
+          <Property Name="DateReturned" Type="datetimeoffset" Precision="7" />
+        </EntityType>
+        <EntityType Name="UserActivation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="varchar" MaxLength="50" />
+          <Property Name="ActivationCode" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'VidlyDbFirst.dbo.vwRentals' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwRentals">
+          <Key>
+            <PropertyRef Name="CustomerName" />
+            <PropertyRef Name="MovieName" />
+            <PropertyRef Name="MovieId" />
+          </Key>
+          <Property Name="Id" Type="int" />
+          <Property Name="CustomerName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MovieName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Genre" Type="varchar" MaxLength="20" />
+          <Property Name="MovieId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Rental_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Rental" Type="Self.Rental" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rental">
+              <PropertyRef Name="Customer_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rental_Movies">
+          <End Role="Movies" Type="Self.Movies" Multiplicity="1" />
+          <End Role="Rental" Type="Self.Rental" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Movies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rental">
+              <PropertyRef Name="Movie_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VidlyDbFirstModelStoreContainer">
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genre" EntityType="Self.Genre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Membership_Type" EntityType="Self.Membership_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Movies" EntityType="Self.Movies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PageRoles" EntityType="Self.PageRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pages" EntityType="Self.Pages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rental" EntityType="Self.Rental" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserActivation" EntityType="Self.UserActivation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vwRentals" EntityType="Self.vwRentals" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwRentals].[Id] AS [Id], 
+    [vwRentals].[CustomerName] AS [CustomerName], 
+    [vwRentals].[MovieName] AS [MovieName], 
+    [vwRentals].[Genre] AS [Genre], 
+    [vwRentals].[MovieId] AS [MovieId]
+    FROM [dbo].[vwRentals] AS [vwRentals]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Rental_Customer" Association="Self.FK_Rental_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Rental" EntitySet="Rental" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rental_Movies" Association="Self.FK_Rental_Movies">
+            <End Role="Movies" EntitySet="Movies" />
+            <End Role="Rental" EntitySet="Rental" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VidlyDbFirstModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Membership_Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DOB" Type="DateTimeOffset" Precision="7" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Rentals" Relationship="Self.FK_Rental_Customer" FromRole="Customer" ToRole="Rental" />
+          <Property Name="ImageUrl" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Content_Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Movy">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Genre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Qty_In_Stock" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Rentals" Relationship="Self.FK_Rental_Movies" FromRole="Movies" ToRole="Rental" />
+          <Property Name="Release_Date" Type="DateTimeOffset" Precision="7" />
+          <Property Name="NoAvailable" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Rental">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Customer_Id" Type="Int32" Nullable="false" />
+          <Property Name="Movie_Id" Type="Int32" Nullable="false" />
+          <Property Name="Date_Rented" Type="DateTimeOffset" Precision="7" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Rental_Customer" FromRole="Rental" ToRole="Customer" />
+          <NavigationProperty Name="Movy" Relationship="Self.FK_Rental_Movies" FromRole="Rental" ToRole="Movies" />
+          <Property Name="DateReturned" Type="DateTimeOffset" Precision="7" />
+        </EntityType>
+        <Association Name="FK_Rental_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Rental" Type="Self.Rental" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rental">
+              <PropertyRef Name="Customer_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rental_Movies">
+          <End Role="Movies" Type="Self.Movy" Multiplicity="1" />
+          <End Role="Rental" Type="Self.Rental" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Movies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rental">
+              <PropertyRef Name="Movie_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VidlyDbFirstEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Movies" EntityType="Self.Movy" />
+          <EntitySet Name="Rentals" EntityType="Self.Rental" />
+          <AssociationSet Name="FK_Rental_Customer" Association="Self.FK_Rental_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Rental" EntitySet="Rentals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rental_Movies" Association="Self.FK_Rental_Movies">
+            <End Role="Movies" EntitySet="Movies" />
+            <End Role="Rental" EntitySet="Rentals" />
+          </AssociationSet>
+          <EntitySet Name="vwRentals" EntityType="VidlyDbFirstModel.vwRental" />
+          <EntitySet Name="Membership_Type" EntityType="VidlyDbFirstModel.Membership_Type" />
+          <EntitySet Name="Genres" EntityType="VidlyDbFirstModel.Genre" />
+          <EntitySet Name="UserActivations" EntityType="VidlyDbFirstModel.UserActivation" />
+          <EntitySet Name="PageRoles" EntityType="VidlyDbFirstModel.PageRole" />
+          <EntitySet Name="Pages" EntityType="VidlyDbFirstModel.Page" />
+        </EntityContainer>
+        <EntityType Name="vwRental">
+          <Key>
+            <PropertyRef Name="MovieId" />
+            <PropertyRef Name="CustomerName" />
+            <PropertyRef Name="MovieName" />
+          </Key>
+          <Property Name="Genre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" />
+          <Property Name="MovieId" Type="Int32" Nullable="false" />
+          <Property Name="CustomerName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MovieName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Membership_Type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Age_Limit" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="UserActivation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ActivationCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="PageRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PageID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Page">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VidlyDbFirstModelStoreContainer" CdmEntityContainer="VidlyDbFirstEntities1">
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="VidlyDbFirstModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Content_Type" ColumnName="Content_Type" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Membership_Type" ColumnName="Membership_Type" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Movies">
+            <EntityTypeMapping TypeName="VidlyDbFirstModel.Movy">
+              <MappingFragment StoreEntitySet="Movies">
+                <ScalarProperty Name="NoAvailable" ColumnName="NoAvailable" />
+                <ScalarProperty Name="Release_Date" ColumnName="Release_Date" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+                <ScalarProperty Name="Qty_In_Stock" ColumnName="Qty_In_Stock" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rentals">
+            <EntityTypeMapping TypeName="VidlyDbFirstModel.Rental">
+              <MappingFragment StoreEntitySet="Rental">
+                <ScalarProperty Name="DateReturned" ColumnName="DateReturned" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+                <ScalarProperty Name="Movie_Id" ColumnName="Movie_Id" />
+                <ScalarProperty Name="Date_Rented" ColumnName="Date_Rented" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwRentals">
+            <EntityTypeMapping TypeName="VidlyDbFirstModel.vwRental">
+              <MappingFragment StoreEntitySet="vwRentals">
+                <ScalarProperty Name="MovieName" ColumnName="MovieName" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="MovieId" ColumnName="MovieId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+                </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Membership_Type">
+            <EntityTypeMapping TypeName="VidlyDbFirstModel.Membership_Type">
+              <MappingFragment StoreEntitySet="Membership_Type">
+                <ScalarProperty Name="Age_Limit" ColumnName="Age_Limit" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genres">
+            <EntityTypeMapping TypeName="VidlyDbFirstModel.Genre">
+              <MappingFragment StoreEntitySet="Genre">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserActivations">
+            <EntityTypeMapping TypeName="VidlyDbFirstModel.UserActivation">
+              <MappingFragment StoreEntitySet="UserActivation">
+                <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PageRoles">
+            <EntityTypeMapping TypeName="VidlyDbFirstModel.PageRole">
+              <MappingFragment StoreEntitySet="PageRoles">
+                <ScalarProperty Name="PageID" ColumnName="PageID" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pages">
+            <EntityTypeMapping TypeName="VidlyDbFirstModel.Page">
+              <MappingFragment StoreEntitySet="Pages">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

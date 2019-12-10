@@ -1,0 +1,84 @@
+﻿@using GridMvc.Html
+@model List<Vidly.EF.Movy>
+
+
+@{
+    ViewBag.Title = "List Of Movies";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h2>List of Movies</h2>
+<p>
+    @Html.ActionLink("Add New Movie", "Create", "Movies",  new { @class="btn btn-primary"})
+</p>
+
+@if (!Model.Any())
+{
+    <p>We don't have any movies yet</p>
+}
+else
+{
+    <table id="movies" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Movie</th>
+                <th>Genre</th>
+                <th>Details</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var movie in Model)
+            {
+                <tr>
+                    <td>@movie.Name</td>
+                    <td>@movie.Genre</td>
+                    <td>@Html.ActionLink("Details", "Details", new { id = @movie.Id })</td>
+                    <td>@Html.ActionLink("Edit", "Edit", new { id = @movie.Id })</td>
+                    
+                    <td>
+                        <button data-movies-id="@movie.Id" class="btn btn-link js-delete">Delete</button>
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+}
+
+
+
+
+@section scripts
+    {
+       <script>
+           $(document).ready(function () {
+               $("#movies").DataTable();
+
+               $("#movies .js-delete").on("click", function () {
+                   var button = $(this);
+                   bootbox.confirm("are you sure you want to delete this movie?", function (result) {
+                       if (result) {  //if user selects ok from the dialogue box
+                           $.ajax({
+                               url: "/api/movies/" + button.attr("data-movies-id"),
+                               method: "DELETE", //this would delete it from the database
+                               success: function () { //if deleting from db is successful
+                                   button.parents("tr").remove();//this will delete it from the table
+                               }
+
+                           });
+                       }
+                   });                  
+
+               });
+           })
+       </script>
+    }
+
+
+

@@ -1,0 +1,35 @@
+﻿@model Vidly.ViewModels.MovieGenre
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add New Movie </h2>
+@using (Html.BeginForm("Create", "Movies"))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(m => m.Movie.Name)
+        @Html.TextBoxFor(m => m.Movie.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.Name, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Movie.Genre)
+        @Html.DropDownListFor(m => m.Movie.Genre, new SelectList(Model.MovieGenres, "Name", "Name"), "Select Genre", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.Genre, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Movie.Release_Date)
+        @Html.TextBoxFor(m => m.Movie.Release_Date, "{0:dd mm yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.Release_Date, "", new { @class = "text-danger" })
+    </div>  
+    <div class="form-group">
+        @Html.LabelFor(m => m.Movie.Qty_In_Stock)
+        @Html.TextBoxFor(m => m.Movie.Qty_In_Stock, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.Qty_In_Stock, "", new { @class = "text-danger" })
+    </div>
+   
+    <button class="btn btn-primary">Save</button>
+
+}
+

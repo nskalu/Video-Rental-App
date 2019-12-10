@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="VidlyDbFirstModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Membership_Type" Type="varchar" MaxLength="50" />
+    <Property Name="DOB" Type="datetimeoffset" Precision="7" />
+    <Property Name="Address" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Phone" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ImageUrl" Type="varchar" MaxLength="4000" />
+    <Property Name="Image" Type="varbinary(max)" />
+    <Property Name="Content_Type" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Genre">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Membership_Type">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Age_Limit" Type="int" />
+  </EntityType>
+  <EntityType Name="Movies">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Release_Date" Type="datetimeoffset" Precision="7" />
+    <Property Name="Genre" Type="varchar" MaxLength="20" />
+    <Property Name="Qty_In_Stock" Type="int" Nullable="false" />
+    <Property Name="NoAvailable" Type="int" />
+  </EntityType>
+  <EntityType Name="PageRoles">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RoleId" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="PageID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Pages">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Rental">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Customer_Id" Type="int" Nullable="false" />
+    <Property Name="Movie_Id" Type="int" Nullable="false" />
+    <Property Name="Date_Rented" Type="datetimeoffset" Precision="7" />
+    <Property Name="DateReturned" Type="datetimeoffset" Precision="7" />
+  </EntityType>
+  <EntityType Name="UserActivation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="varchar" MaxLength="50" />
+    <Property Name="ActivationCode" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'VidlyDbFirst.dbo.vwRentals' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vwRentals">
+    <Key>
+      <PropertyRef Name="CustomerName" />
+      <PropertyRef Name="MovieName" />
+      <PropertyRef Name="MovieId" />
+    </Key>
+    <Property Name="Id" Type="int" />
+    <Property Name="CustomerName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="MovieName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Genre" Type="varchar" MaxLength="20" />
+    <Property Name="MovieId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Rental_Customer">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+    <End Role="Rental" Type="Self.Rental" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Rental">
+        <PropertyRef Name="Customer_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Rental_Movies">
+    <End Role="Movies" Type="Self.Movies" Multiplicity="1" />
+    <End Role="Rental" Type="Self.Rental" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Movies">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Rental">
+        <PropertyRef Name="Movie_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="VidlyDbFirstModelStoreContainer">
+    <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Genre" EntityType="Self.Genre" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Membership_Type" EntityType="Self.Membership_Type" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Movies" EntityType="Self.Movies" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PageRoles" EntityType="Self.PageRoles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Pages" EntityType="Self.Pages" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Rental" EntityType="Self.Rental" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserActivation" EntityType="Self.UserActivation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="vwRentals" EntityType="Self.vwRentals" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vwRentals].[Id] AS [Id], 
+    [vwRentals].[CustomerName] AS [CustomerName], 
+    [vwRentals].[MovieName] AS [MovieName], 
+    [vwRentals].[Genre] AS [Genre], 
+    [vwRentals].[MovieId] AS [MovieId]
+    FROM [dbo].[vwRentals] AS [vwRentals]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Rental_Customer" Association="Self.FK_Rental_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="Rental" EntitySet="Rental" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Rental_Movies" Association="Self.FK_Rental_Movies">
+      <End Role="Movies" EntitySet="Movies" />
+      <End Role="Rental" EntitySet="Rental" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

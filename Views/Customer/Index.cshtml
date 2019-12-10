@@ -1,0 +1,34 @@
+﻿
+@using Vidly.Models
+@model IEnumerable<Vidly.Models .CustomerVM>
+@{
+    ViewBag.Title = "List of Customers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .divhover{border:1px solid #eee; padding:5px 10px;}
+        .divhover:hover {background:#ddd;
+        }
+    
+</style>
+
+
+<h2>Customers</h2>
+
+@*@if (Model.Id.Count==0)
+{
+  <p>There is no Customer to display</p>
+}
+else
+{*@
+   @foreach (CustomerVM customer in @Model)
+   {
+    <div class="divhover">
+        @Html.ActionLink(@customer.Name, "Detail", new { id = customer.Id }, "Customer")
+    </div>
+   }
+
+
+
+

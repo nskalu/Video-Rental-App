@@ -1,0 +1,113 @@
+﻿
+
+@{
+    ViewBag.Title = "New Rentals";
+    
+}
+
+<h2>New Rental Form</h2>
+
+<hr />
+<form id ="newRental">
+    <div class="form-group">
+        <label>Customer</label>
+        <div class="tt-container">
+            <input id="customer" type="text" value="" class="form-control" />
+        </div>
+
+    </div>
+    <div class="form-group">
+        <label>Movie</label>
+        <div class="tt-container">
+            <input id="movie" type="text" value="" class="form-control" />
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-4">
+                <ul id="movies" class="list-group"></ul>
+            </div>
+        </div>
+
+    </div>
+    @*<a href="#" class="btn btn-primary js-create" id="asubmit" type="submit">Submit</a>*@
+    <button class="btn btn-primary" id="asubmit">Submit</button>
+</form>
+
+
+@section scripts
+{
+
+    <script>
+        $(document).ready(function () {
+            
+            var vm = { movieIds: [] };
+            //next line is to create a bloodhound object.  Bloodhound is the suggestion engine behind typeahead, it encapsulates all the business logic for auto completion, such as calling the backend api, caching the result etc
+            var customers = new Bloodhound({
+                //next line is some bloodhound properties
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //transforms data into bunch of string tokens, tokenizing a string means splitting a string, so we using space to tokenize the name property of our customer
+                queryTokenizer: Bloodhound.tokenizers.whitespace, //transforms query into bunch of tokens
+                remote: {
+                    url: '/api/customers?query=%QUERY', //query is the parameter we specified in the wildcard, what the user types in the textbox will be placed here at runtime so we can filter our customers and return those who match the query
+                    wildcard: '%QUERY'
+                }
+
+            });
+            // next line is reference to our textbox, minlenght is to tell how many characters u enter b4 the wildcard does the search and highlight is to make it bold
+            $('#customer').typeahead({ minLength: 3, highlight: true }, {
+                name: 'customers',
+                display: 'name', //what property to display in the suggestion list
+                source: customers //our bloodhound object
+            }).on("typeahead:select", function(e, customer){ //e here is the event and customer here is the selected customer. we used this on method to trigger an event for the select, ie when a customer is selected from the wild card list, we want to save the id of that customer somewhere for future use
+                vm.customerId = customer.id;
+            });
+
+            //movie code here
+            var movies = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/api/movies?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+
+            });
+
+            $('#movie').typeahead({ minLength: 3, highlight: true }, {
+                name: 'movies',
+                display: 'name',
+                source: movies
+            }).on("typeahead:select", function (e, movie) { // we used the on method to trigger an event for the select, ie when a movie is selected from the wild card list, we want to save the id of that customer somewhere
+                $("#movies").append("<li class='list-group-item'>" + movie.name + "</li>"); //this line will append any movie u select to the list, #movies here is the id of our list
+                $("#movie").typeahead("val", "");   //this line clears the movie textbox. #movie here is the id of our movie textbox
+                vm.movieIds.push(movie.id);       //this line saves the ids of all the selected movies 
+            });
+
+
+            //this is the function that triggers the submit
+            $('#asubmit').on('click', function (e) {
+                e.preventDefault();
+                
+                $.ajax({
+                    
+                    url: "api/NewRentals",
+                    method: "post",
+                    data: vm
+                })
+                .done(function () {
+                    toastr.success("Rentals successfully recorded!")
+                    $('input[type=text], textarea').val("")
+                    
+                })
+                .fail(function () {
+                    toastr.error("Something unexpected happened")
+                });
+
+               
+            });
+        });
+    </script>
+
+
+
+    }
+
+

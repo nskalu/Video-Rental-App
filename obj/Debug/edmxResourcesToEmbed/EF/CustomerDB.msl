@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="VidlyDbFirstModelStoreContainer" CdmEntityContainer="VidlyDbFirstEntities1">
+    <EntitySetMapping Name="Customers">
+      <EntityTypeMapping TypeName="VidlyDbFirstModel.Customer">
+        <MappingFragment StoreEntitySet="Customer">
+          <ScalarProperty Name="Content_Type" ColumnName="Content_Type" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Membership_Type" ColumnName="Membership_Type" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Movies">
+      <EntityTypeMapping TypeName="VidlyDbFirstModel.Movy">
+        <MappingFragment StoreEntitySet="Movies">
+          <ScalarProperty Name="NoAvailable" ColumnName="NoAvailable" />
+          <ScalarProperty Name="Release_Date" ColumnName="Release_Date" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Genre" ColumnName="Genre" />
+          <ScalarProperty Name="Qty_In_Stock" ColumnName="Qty_In_Stock" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rentals">
+      <EntityTypeMapping TypeName="VidlyDbFirstModel.Rental">
+        <MappingFragment StoreEntitySet="Rental">
+          <ScalarProperty Name="DateReturned" ColumnName="DateReturned" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+          <ScalarProperty Name="Movie_Id" ColumnName="Movie_Id" />
+          <ScalarProperty Name="Date_Rented" ColumnName="Date_Rented" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vwRentals">
+      <EntityTypeMapping TypeName="VidlyDbFirstModel.vwRental">
+        <MappingFragment StoreEntitySet="vwRentals">
+          <ScalarProperty Name="MovieName" ColumnName="MovieName" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="MovieId" ColumnName="MovieId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Genre" ColumnName="Genre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Membership_Type">
+      <EntityTypeMapping TypeName="VidlyDbFirstModel.Membership_Type">
+        <MappingFragment StoreEntitySet="Membership_Type">
+          <ScalarProperty Name="Age_Limit" ColumnName="Age_Limit" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Genres">
+      <EntityTypeMapping TypeName="VidlyDbFirstModel.Genre">
+        <MappingFragment StoreEntitySet="Genre">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserActivations">
+      <EntityTypeMapping TypeName="VidlyDbFirstModel.UserActivation">
+        <MappingFragment StoreEntitySet="UserActivation">
+          <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PageRoles">
+      <EntityTypeMapping TypeName="VidlyDbFirstModel.PageRole">
+        <MappingFragment StoreEntitySet="PageRoles">
+          <ScalarProperty Name="PageID" ColumnName="PageID" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Pages">
+      <EntityTypeMapping TypeName="VidlyDbFirstModel.Page">
+        <MappingFragment StoreEntitySet="Pages">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

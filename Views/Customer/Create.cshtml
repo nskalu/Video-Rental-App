@@ -1,0 +1,68 @@
+﻿@model Vidly.Models.CustomerMembershipType
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Customer</h2>
+@using (Html.BeginForm("Create", "Customer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.Name)
+        @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Customer.Name, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.Membership_Type)
+        @Html.DropDownListFor(m => m.Customer.Membership_Type, new SelectList(Model.MembershipTypes, "Name", "Name"), "Select Membership Type", new { @class = "form-control" })
+        <span style="color:blue">note: customer must be above 18yrs to go on a membership, if you are not up to 18yrs you can only set the "pay as you go" membership</span>
+        @Html.ValidationMessageFor(m => m.Customer.Membership_Type, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.DOB)
+        @Html.TextBoxFor(m => m.Customer.DOB, "{0:dd mm yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Customer.DOB, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.Address)
+        @Html.TextBoxFor(m => m.Customer.Address, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.Phone)
+        @Html.TextBoxFor(m => m.Customer.Phone, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <div>
+            <img id="user_img"
+                 height="100"
+                 width="90"
+                 style="border:solid" />
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.Customer.PostedFile, new { @name = "PostedFile", @type = "file", @class = "form-control", @onchange = "show(this)" })
+            @Html.ValidationMessageFor(m => m.Customer.PostedFile, "", new { @class = "text-danger" })
+            @*<input type="file" title="search image" name="Image" onchange="show(this)" /> >*@
+        </div>
+    </div>
+    <button class="btn btn-primary">Save</button>
+
+}
+
+@section scripts
+{
+
+    <script src="~/Scripts/jquery-1.7.1.min.js"></script>
+    <script>
+        function show(input) {
+            if (input.files && input.files[0]) {
+                var filerdr = new FileReader();
+                filerdr.onload = function (e) {
+                    $('#user_img').attr('src', e.target.result);
+                }
+                filerdr.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}
+
